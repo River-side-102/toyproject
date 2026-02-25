@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>나는 어떤 디자이너인가</title>
 <link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/chiron-goround-tc/index.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -172,27 +173,29 @@ header p { color: var(--text-sub); font-size: 0.88rem; }
   </div>
 
   <div id="resultStep" style="display:none;">
-    <div class="result-hero">
-      <div class="result-hero-body">
-        <div class="result-subtitle" id="rSubtitle"></div>
-        <div class="result-typename" id="rTypename"></div>
+    <div id="resultCapture">
+      <div class="result-hero">
+        <div class="result-hero-body">
+          <div class="result-subtitle" id="rSubtitle"></div>
+          <div class="result-typename" id="rTypename"></div>
+        </div>
+        <div class="char-wrap" id="rChar"></div>
+        <div class="result-tags" id="rTags"></div>
+        <div class="result-oneliner" id="rOneliner"></div>
       </div>
-      <div class="char-wrap" id="rChar"></div>
-      <div class="result-tags" id="rTags"></div>
-      <div class="result-oneliner" id="rOneliner"></div>
-    </div>
-    <div class="bullets-card">
-      <div class="result-name-line" id="rBulletsTitle"></div>
-      <ul class="bullets-list" id="rBullets"></ul>
-    </div>
-    <div class="sub-result" id="rSub"></div>
-    <div class="score-card">
-      <div class="result-card-title">전체 점수</div>
-      <div id="rScores"></div>
+      <div class="bullets-card">
+        <div class="result-name-line" id="rBulletsTitle"></div>
+        <ul class="bullets-list" id="rBullets"></ul>
+      </div>
+      <div class="sub-result" id="rSub"></div>
+      <div class="score-card">
+        <div class="result-card-title">전체 점수</div>
+        <div id="rScores"></div>
+      </div>
     </div>
     <div class="btn-row">
       <button class="btn-primary" onclick="goRetry()">🔄 다시 테스트하기</button>
-      <button class="btn-secondary" onclick="window.print()">💾 결과 저장하기</button>
+      <button class="btn-secondary" onclick="saveAsJpeg()">💾 결과 저장하기</button>
     </div>
   </div>
 
@@ -456,6 +459,19 @@ function showResult() {
       el.style.width = el.dataset.pct + '%';
     });
   }, 120);
+}
+
+async function saveAsJpeg() {
+  var el = document.getElementById('resultCapture');
+  var canvas = await html2canvas(el, {
+    backgroundColor: '#fdf3c8',
+    scale: 2,
+    useCORS: true,
+  });
+  var link = document.createElement('a');
+  link.download = userName + '-디자이너-유형.jpg';
+  link.href = canvas.toDataURL('image/jpeg', 0.92);
+  link.click();
 }
 
 function goRetry() {
