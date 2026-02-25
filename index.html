@@ -463,22 +463,18 @@ function showResult() {
 
 async function saveAsJpeg() {
   var el = document.getElementById('resultCapture');
+  el.style.padding = '20px';
+  el.style.background = '#fdf3c8';
   var canvas = await html2canvas(el, {
     backgroundColor: '#fdf3c8',
     scale: 2,
     useCORS: true,
   });
-  var pad = 40; // 20px @ 2x scale
-  var padded = document.createElement('canvas');
-  padded.width = canvas.width + pad * 2;
-  padded.height = canvas.height + pad * 2;
-  var ctx = padded.getContext('2d');
-  ctx.fillStyle = '#fdf3c8';
-  ctx.fillRect(0, 0, padded.width, padded.height);
-  ctx.drawImage(canvas, pad, pad);
+  el.style.padding = '';
+  el.style.background = '';
   var link = document.createElement('a');
   link.download = userName + '-디자이너-유형.jpg';
-  link.href = padded.toDataURL('image/jpeg', 0.92);
+  link.href = canvas.toDataURL('image/jpeg', 0.92);
   link.click();
 }
 
