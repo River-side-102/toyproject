@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나는 어떤 디자이너인가</title>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/chiron-goround-tc/index.min.css" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red-dark: #6b0f1a;
+  --red-mid:  #a82232;
+  --cream:    #fdf3c8;
+  --gold:     #f9c95c;
+  --card-bg:  #fffef5;
+  --text:     #2a0a0f;
+  --text-sub: #9a6060;
+  --border:   #f0d8c0;
+}
+body {
+  font-family: 'Chiron GoRound TC Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 40px 20px 80px;
+}
+.container { max-width: 520px; margin: 0 auto; }
+
+header { text-align: center; margin-bottom: 40px; }
+.intro-tag {
+  display: inline-block; background: rgba(168,34,50,0.1);
+  border-radius: 999px; padding: 5px 16px;
+  font-size: 0.75rem; color: var(--red-mid); margin-bottom: 16px; font-weight: 600;
+}
+header h1 { font-size: 1.7rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 8px; color: var(--red-dark); }
+header p { color: var(--text-sub); font-size: 0.88rem; }
+
+.card {
+  background: var(--card-bg); border-radius: 16px; padding: 24px;
+  margin-bottom: 12px; box-shadow: 0 1px 4px rgba(107,15,26,0.08);
+  border: 1px solid var(--border);
+}
+.question { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f5e8d8; }
+.question:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.q-text { font-size: 0.9rem; color: var(--text); margin-bottom: 12px; line-height: 1.65; }
+
+.scale { display: flex; gap: 5px; align-items: center; }
+.scale-label { font-size: 0.65rem; color: #c8a0a0; min-width: 7rem; flex-shrink: 0; text-align: center; line-height: 1.3; white-space: nowrap; word-break: keep-all; }
+.scale-btns { display: flex; gap: 4px; flex: 1; justify-content: center; }
+.scale-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 1.5px solid #f0d8c0; background: #fff9f0;
+  color: #c8a0a0; font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; transition: all 0.12s;
+}
+.scale-btn:hover { border-color: var(--red-mid); color: var(--red-mid); background: #fff0f0; }
+.scale-btn.selected { color: #fff; border-color: transparent; background: var(--red-mid); }
+
+.progress-wrap { margin-bottom: 28px; }
+.progress-bar { background: rgba(168,34,50,0.12); border-radius: 999px; height: 5px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--red-mid), var(--gold)); transition: width 0.3s; }
+.progress-text { text-align: right; font-size: 0.7rem; color: var(--text-sub); margin-top: 5px; }
+
+.btn-primary {
+  display: block; width: 100%; padding: 16px;
+  background: var(--red-dark); border: none; border-radius: 12px;
+  color: var(--cream); font-size: 0.92rem; font-weight: 700;
+  cursor: pointer; transition: opacity 0.2s; font-family: inherit; margin-top: 12px;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.25; cursor: not-allowed; }
+.btn-secondary {
+  display: block; width: 100%; padding: 15px;
+  background: transparent; border: 1.5px solid var(--border); border-radius: 12px;
+  color: var(--text-sub); font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+.btn-secondary:hover { border-color: var(--red-mid); color: var(--red-mid); }
+.btn-row { display: flex; flex-direction: column; gap: 10px; }
+
+.result-hero {
+  background: var(--card-bg); border-radius: 24px;
+  padding: 36px 28px 32px; text-align: center;
+  box-shadow: 0 4px 24px rgba(107,15,26,0.12);
+  border: 1px solid var(--border); margin-bottom: 14px;
+}
+.result-name-line { font-size: 1rem; font-weight: 700; color: var(--text-sub); margin-bottom: 20px; text-align: center; }
+.result-card-title { font-size: 1rem; font-weight: 700; color: var(--text-sub); margin-bottom: 14px; text-align: center; }
+.result-hero-body { margin-bottom: 24px; }
+.result-hero-body .result-subtitle { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 4px; }
+.result-hero-body .result-typename { font-size: 2rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 0; }
+.char-wrap { margin: 0 auto 24px; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; }
+.result-tags { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-bottom: 18px; }
+.result-tag { padding: 5px 13px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; background: rgba(249,201,92,0.2); color: #7a4a00; }
+.result-oneliner { font-size: 1rem; font-weight: 800; color: var(--red-dark); line-height: 1.5; }
+
+.bullets-card {
+  background: var(--card-bg); border-radius: 20px;
+  padding: 24px 24px 24px 20px;
+  box-shadow: 0 2px 12px rgba(107,15,26,0.08);
+  border: 1px solid var(--border); margin-bottom: 14px;
+}
+.bullets-card .result-name-line { margin-bottom: 14px; }
+.bullets-list { list-style: none; }
+.bullets-list li {
+  font-size: 0.88rem; color: #4a2020; line-height: 1.65;
+  padding: 6px 0 6px 18px; position: relative;
+  border-bottom: 1px solid #f5e8d8;
+}
+.bullets-list li:last-child { border-bottom: none; }
+.bullets-list li::before { content: '•'; position: absolute; left: 4px; top: 50%; transform: translateY(-50%); color: var(--gold); font-size: 1rem; }
+
+.sub-result {
+  background: var(--card-bg); border-radius: 16px;
+  padding: 18px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;
+  box-shadow: 0 2px 8px rgba(107,15,26,0.07);
+  border: 1px solid var(--border); margin-bottom: 14px;
+}
+.sub-result .sub-label,
+.sub-result .sub-name,
+.sub-result .sub-oneliner { text-align: center; }
+.sub-label { font-size: 0.68rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0; }
+.sub-name { font-size: 1rem; font-weight: 800; }
+.sub-oneliner { font-size: 0.78rem; color: var(--text-sub); margin-top: 0; }
+
+.score-card {
+  background: var(--card-bg); border-radius: 16px; padding: 22px 20px;
+  box-shadow: 0 2px 8px rgba(107,15,26,0.07);
+  border: 1px solid var(--border); margin-bottom: 14px;
+}
+.score-card .result-card-title { margin-bottom: 16px; }
+.score-group { margin-bottom: 20px; }
+.score-group:last-child { margin-bottom: 0; }
+.score-group-label { font-size: 0.72rem; font-weight: 700; margin-bottom: 12px; }
+.score-row { margin-bottom: 14px; }
+.score-row:last-child { margin-bottom: 0; }
+.score-meta { display: flex; justify-content: space-between; margin-bottom: 7px; }
+.score-name-txt { font-size: 0.82rem; font-weight: 700; }
+.score-right-txt { font-size: 0.8rem; color: var(--text-sub); }
+.bar-bg { background: rgba(168,34,50,0.1); border-radius: 999px; height: 7px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 999px; transition: width 0.9s cubic-bezier(.4,0,.2,1); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="intro-tag">디자이너 성향 테스트</div>
+    <h1>나는 뭘 할 때<br>제일 신나는 디자이너야?</h1>
+    <p>솔직하게 답할수록 잘 맞아요.</p>
+  </header>
+
+  <div id="nameStep">
+    <div class="card" style="text-align:center; padding:36px 28px;">
+      <div style="font-size:1.5rem; margin-bottom:8px;">👋</div>
+      <div style="font-size:1rem; font-weight:800; color:var(--red-dark); margin-bottom:24px;">먼저 이름을 알려주세요</div>
+      <input id="nameInput" type="text" placeholder="이름 또는 닉네임"
+        style="width:100%; padding:14px 16px; border-radius:10px; border:1.5px solid var(--border);
+               background:#fff9f0; font-size:0.95rem; color:var(--text); outline:none;
+               font-family:inherit; text-align:center; margin-bottom:14px;" />
+      <button id="nameNextBtn" class="btn-primary" disabled>시작하기</button>
+    </div>
+  </div>
+
+  <div id="testStep" style="display:none;">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:0%"></div></div>
+      <div class="progress-text" id="pText">0 / 20</div>
+    </div>
+    <div class="card" id="qList"></div>
+    <button id="submitBtn" class="btn-primary" disabled>결과 확인하기</button>
+  </div>
+
+  <div id="resultStep" style="display:none;">
+    <div class="result-hero">
+      <div class="result-hero-body">
+        <div class="result-subtitle" id="rSubtitle"></div>
+        <div class="result-typename" id="rTypename"></div>
+      </div>
+      <div class="char-wrap" id="rChar"></div>
+      <div class="result-tags" id="rTags"></div>
+      <div class="result-oneliner" id="rOneliner"></div>
+    </div>
+    <div class="bullets-card">
+      <div class="result-name-line" id="rBulletsTitle"></div>
+      <ul class="bullets-list" id="rBullets"></ul>
+    </div>
+    <div class="sub-result" id="rSub"></div>
+    <div class="score-card">
+      <div class="result-card-title">전체 점수</div>
+      <div id="rScores"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goRetry()">🔄 다시 테스트하기</button>
+      <button class="btn-secondary" onclick="window.print()">💾 결과 저장하기</button>
+    </div>
+  </div>
+
+</div>
+<script>
+const CHARS = {
+  A:`<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+  <rect x="35" y="42" width="80" height="72" rx="16" fill="#c4b5fd" stroke="#7c4dff" stroke-width="3"/>
+  <rect x="50" y="88" width="10" height="14" rx="2" fill="#7c4dff" opacity="0.5"/>
+  <rect x="65" y="80" width="10" height="22" rx="2" fill="#7c4dff" opacity="0.7"/>
+  <rect x="80" y="70" width="10" height="32" rx="2" fill="#7c4dff"/>
+  <circle cx="60" cy="64" r="5" fill="#7c4dff"/>
+  <circle cx="90" cy="64" r="5" fill="#7c4dff"/>
+  <path d="M62 78 Q75 86 88 78" stroke="#7c4dff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <line x1="35" y1="72" x2="14" y2="60" stroke="#7c4dff" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="14" cy="58" r="4" fill="#7c4dff"/>
+  <line x1="115" y1="66" x2="136" y2="48" stroke="#7c4dff" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="60" y1="114" x2="52" y2="138" stroke="#7c4dff" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="90" y1="114" x2="98" y2="138" stroke="#7c4dff" stroke-width="3.5" stroke-linecap="round"/>
+  <ellipse cx="50" cy="140" rx="8" ry="4" fill="#7c4dff"/>
+  <ellipse cx="100" cy="140" rx="8" ry="4" fill="#7c4dff"/>
+  <path d="M55 42 L62 28 L75 38 L88 28 L95 42" stroke="#7c4dff" stroke-width="2.5" stroke-linejoin="round" fill="#ede9fe"/>
+  <circle cx="75" cy="38" r="3" fill="#7c4dff"/>
+</svg>`,
+  B:`<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+  <ellipse cx="75" cy="82" rx="38" ry="42" fill="#bbf7d0" stroke="#00c26f" stroke-width="3"/>
+  <ellipse cx="63" cy="74" rx="5" ry="6" fill="#00c26f"/>
+  <ellipse cx="87" cy="74" rx="5" ry="6" fill="#00c26f"/>
+  <line x1="58" y1="68" x2="68" y2="68" stroke="#00c26f" stroke-width="2" stroke-linecap="round"/>
+  <path d="M64 90 Q75 98 86 90" stroke="#00c26f" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <line x1="37" y1="80" x2="16" y2="68" stroke="#00c26f" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="10" cy="62" r="8" stroke="#00c26f" stroke-width="2.5" fill="none"/>
+  <line x1="16" y1="68" x2="20" y2="72" stroke="#00c26f" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="113" y1="74" x2="134" y2="56" stroke="#00c26f" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M131 50 L140 54 L136 63 Z" fill="#00c26f"/>
+  <line x1="62" y1="122" x2="55" y2="142" stroke="#00c26f" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="88" y1="122" x2="95" y2="142" stroke="#00c26f" stroke-width="3.5" stroke-linecap="round"/>
+  <ellipse cx="53" cy="143" rx="8" ry="4" fill="#00c26f"/>
+  <ellipse cx="97" cy="143" rx="8" ry="4" fill="#00c26f"/>
+  <circle cx="75" cy="38" r="5" fill="#00c26f"/>
+  <line x1="75" y1="28" x2="75" y2="33" stroke="#00c26f" stroke-width="2" stroke-linecap="round"/>
+  <line x1="75" y1="43" x2="75" y2="48" stroke="#00c26f" stroke-width="2" stroke-linecap="round"/>
+  <line x1="65" y1="38" x2="70" y2="38" stroke="#00c26f" stroke-width="2" stroke-linecap="round"/>
+  <line x1="80" y1="38" x2="85" y2="38" stroke="#00c26f" stroke-width="2" stroke-linecap="round"/>
+</svg>`,
+  C:`<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+  <path d="M75 30 C55 30 42 50 42 75 C42 100 55 118 75 118 C95 118 108 100 108 75 C108 50 95 30 75 30 Z" fill="#fef08a" stroke="#e8a000" stroke-width="3"/>
+  <path d="M42 90 L28 108 L42 102 Z" fill="#fcd34d" stroke="#e8a000" stroke-width="2"/>
+  <path d="M108 90 L122 108 L108 102 Z" fill="#fcd34d" stroke="#e8a000" stroke-width="2"/>
+  <circle cx="75" cy="72" r="26" fill="#fff" stroke="#e8a000" stroke-width="2.5"/>
+  <circle cx="65" cy="68" r="6" fill="#e8a000"/>
+  <circle cx="85" cy="68" r="6" fill="#e8a000"/>
+  <circle cx="67" cy="66" r="2" fill="#fff"/>
+  <circle cx="87" cy="66" r="2" fill="#fff"/>
+  <path d="M64 81 Q75 92 86 81" stroke="#e8a000" stroke-width="2.5" stroke-linecap="round" fill="#fcd34d"/>
+  <line x1="42" y1="78" x2="20" y2="70" stroke="#e8a000" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="108" y1="78" x2="130" y2="70" stroke="#e8a000" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="18" cy="69" r="5" fill="#fef08a" stroke="#e8a000" stroke-width="2"/>
+  <circle cx="132" cy="69" r="5" fill="#fef08a" stroke="#e8a000" stroke-width="2"/>
+  <path d="M62 118 Q68 136 75 128 Q82 136 88 118" fill="#fb923c" stroke="#e8a000" stroke-width="1.5"/>
+  <path d="M67 118 Q72 130 75 124 Q78 130 83 118" fill="#fef08a"/>
+  <path d="M22 30 L24 36 L30 36 L25 40 L27 46 L22 42 L17 46 L19 40 L14 36 L20 36 Z" fill="#fcd34d" opacity="0.8"/>
+</svg>`,
+  D:`<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+  <rect x="36" y="45" width="78" height="75" rx="14" fill="#fecaca" stroke="#f05050" stroke-width="3"/>
+  <line x1="52" y1="72" x2="98" y2="72" stroke="#f05050" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="52" y1="83" x2="88" y2="83" stroke="#f05050" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="52" y1="94" x2="93" y2="94" stroke="#f05050" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <path d="M52 69 L57 74 L66 63" stroke="#f05050" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="57" y="54" width="10" height="9" rx="3" fill="#f05050"/>
+  <rect x="83" y="54" width="10" height="9" rx="3" fill="#f05050"/>
+  <path d="M62 66 Q75 72 88 66" stroke="#f05050" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <line x1="36" y1="75" x2="15" y2="68" stroke="#f05050" stroke-width="3.5" stroke-linecap="round"/>
+  <rect x="5" y="60" width="12" height="16" rx="3" fill="#fca5a5" stroke="#f05050" stroke-width="2"/>
+  <line x1="114" y1="75" x2="135" y2="68" stroke="#f05050" stroke-width="3.5" stroke-linecap="round"/>
+  <rect x="133" y="60" width="12" height="16" rx="3" fill="#fca5a5" stroke="#f05050" stroke-width="2"/>
+  <line x1="60" y1="120" x2="54" y2="142" stroke="#f05050" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="90" y1="120" x2="96" y2="142" stroke="#f05050" stroke-width="3.5" stroke-linecap="round"/>
+  <ellipse cx="52" cy="143" rx="9" ry="5" fill="#f05050"/>
+  <ellipse cx="98" cy="143" rx="9" ry="5" fill="#f05050"/>
+  <ellipse cx="75" cy="44" rx="22" ry="7" fill="#f05050"/>
+  <rect x="55" y="36" width="40" height="10" rx="5" fill="#fca5a5" stroke="#f05050" stroke-width="2"/>
+</svg>`
+};
+
+const TYPES = {
+  A:{label:"Impact Architect",icon:"🔥",color:"#7c4dff",subtitle:"항상 한 발 앞서 생각하는",nickname:"임팩트 설계사",tags:["전략가","KPI 드리븐","비즈니스 뇌"],oneliner:"\"이게 왜 필요한지\"를 모르면<br>시작도 하기 싫어요.",bullets:["디자인 작업보다 왜 이걸 만드는지 맥락을 먼저 파악해야 직성이 풀려요.","회의에서 \"근데 이게 비즈니스적으로 어떤 의미가 있어요?\"라고 자연스럽게 묻는 편이에요.","결과물이 아름답지 않아도 KPI를 달성하면 충분히 만족할 수 있어요.","전략 세우는 시간이 길어져도 괜찮은데, 목적 없는 작업은 금방 지쳐요.","팀이 방향을 잃었을 때 내가 먼저 목표를 다시 정리하고 싶어지는 타입이에요.","숫자와 데이터가 뒷받침되지 않는 의사결정이 불안하게 느껴져요."]},
+  B:{label:"Craft Master",icon:"✨",color:"#00c26f",subtitle:"1픽셀도 허투루 넘기지 않는",nickname:"완성도 장인",tags:["디테일리스트","완성 중독","UX 감각"],oneliner:"\"대충\" 넘어가는 게 더 힘들어요.<br>완성될 때까지 눈에 밟혀요.",bullets:["결과물이 아름답지 않으면 왠지 마음이 찜찜해서 퇴근하기가 어려워요.","폰트 굵기 하나, 여백 2픽셀 차이를 설명할 수 없는 사람은 이해 못 할 거예요.","작업에 깊이 몰입하는 시간이 생산성 최고인 거라서, 방해받으면 좀 힘들어요.","사용자가 무의식중에 느끼는 감정까지 신경 쓰다 보니 작업 시간이 길어지는 편이에요.","\"이 정도면 됐지\"라는 말이 가장 듣기 불편한 말 중 하나예요.","완성된 결과물이 딱 맞아 떨어지는 느낌을 받으면 그 날 하루가 행복해요."]},
+  C:{label:"Explorer Builder",icon:"🔭",color:"#e8a000",subtitle:"기존 방식을 못 참고 뜯어보는",nickname:"실험 탐험가",tags:["실험가","AI·툴 덕후","질문 제조기"],oneliner:"\"우리 왜 이렇게 해요?\"<br>이 질문이 입에 붙어 있어요.",bullets:["새 툴이나 AI 기능 나왔다는 소식 들으면 일단 써봐야 마음이 놓여요.","회의에서 \"그냥 하던 대로 하죠\"라는 말이 제일 재미없게 들려요.","어떻게 될지 몰라도 일단 시도해보는 게 안 해보는 것보다 훨씬 나은 것 같아요.","기존 방식을 의심하고 더 나은 구조를 생각하다 보면 시간 가는 줄 몰라요.","불확실한 상황도 \"이제 탐색할 게 생겼다\"고 받아들이는 편이에요.","아이디어가 너무 많아서 정작 하나를 끝내는 게 제일 어려운 숙제예요."]},
+  D:{label:"System Stabilizer",icon:"⚙️",color:"#f05050",subtitle:"혼란을 조용히 정돈하는",nickname:"구조의 수호자",tags:["프로세스 설계","운영 최적화","안정의 기둥"],oneliner:"팀이 헤매고 있으면<br>먼저 정리하고 싶어 손이 근질거려요.",bullets:["일하는 방식이 정돈되어 있지 않으면 뭔가 불안하고 집중이 잘 안 돼요.","같은 실수가 반복되는 걸 보면 프로세스를 먼저 고쳐야 한다고 생각해요.","역할과 책임이 모호한 상태에서 일하는 건 피로감이 두 배로 쌓여요.","온보딩 자료나 가이드라인 만드는 일이 귀찮지 않고 오히려 뿌듯해요.","운영이 매끄럽게 돌아가고 있을 때 조용히 성취감을 느끼는 타입이에요.","팀 회의에서 자연스럽게 \"그러면 이렇게 정리해볼까요?\" 하고 나서게 돼요."]}
+};
+
+const ALL_QS = [
+  {ax:"A",text:"나는 프로젝트가 시장에 어떤 영향을 줄지 생각할 때 가장 흥분된다."},
+  {ax:"A",text:"디자인보다 비즈니스 모델 이야기가 더 재밌다."},
+  {ax:"A",text:'"이게 돈이 되나?"를 자연스럽게 먼저 묻는다.'},
+  {ax:"A",text:"결과 KPI가 명확하면 동기부여가 강해진다."},
+  {ax:"A",text:"전략적 방향 설정에 참여할 때 에너지가 올라간다."},
+  {ax:"B",text:"작은 디테일이 틀어져 있으면 계속 신경 쓰인다."},
+  {ax:"B",text:"완성도가 높아질 때 깊은 만족을 느낀다."},
+  {ax:"B",text:"사용자가 느끼는 감정선을 섬세하게 다듬는 게 재밌다."},
+  {ax:"B",text:"결과물이 아름답지 않으면 찝찝하다."},
+  {ax:"B",text:"깊이 있는 집중 시간이 필요하다."},
+  {ax:"C",text:"새로운 툴, 기술, AI 활용법을 실험하는 게 재밌다."},
+  {ax:"C",text:"기존 방식을 의심하고 바꾸고 싶다."},
+  {ax:"C",text:"구조를 다시 설계하는 일이 흥미롭다."},
+  {ax:"C",text:'"우리가 왜 이렇게 하고 있지?"를 자주 묻는다.'},
+  {ax:"C",text:"불확실성이 있어도 탐색이 즐겁다."},
+  {ax:"D",text:"팀의 일하는 방식을 정리할 때 만족감을 느낀다."},
+  {ax:"D",text:"프로세스를 반복 가능하게 만드는 게 중요하다."},
+  {ax:"D",text:"운영이 매끄러워질 때 기분이 좋다."},
+  {ax:"D",text:"혼란스러운 상황을 정돈하는 역할을 자주 맡는다."},
+  {ax:"D",text:"명확한 역할/구조가 있을 때 안정감을 느낀다."}
+];
+
+let userName = '';
+let shuffled = [];
+let sc = {A:0,B:0,C:0,D:0};
+let picked = {};
+let answered = 0;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function lv(s) {
+  if (s >= 22) return {label:"🔥 지배적 정체성", color:"#a82232"};
+  if (s >= 18) return {label:"⚖️ 강한 성향",     color:"#5a5a5f"};
+  if (s >= 15) return {label:"🌊 보조 동기",      color:"#5a5a5f"};
+  return             {label:"💤 약한 성향",       color:"#c8a0a0"};
+}
+
+function show(id) {
+  ['nameStep','testStep','resultStep'].forEach(s => {
+    document.getElementById(s).style.display = s === id ? 'block' : 'none';
+  });
+}
+
+document.getElementById('nameInput').addEventListener('input', function() {
+  document.getElementById('nameNextBtn').disabled = !this.value.trim();
+});
+document.getElementById('nameInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') startTest();
+});
+document.getElementById('nameNextBtn').addEventListener('click', startTest);
+
+function startTest() {
+  const val = document.getElementById('nameInput').value.trim();
+  if (!val) return;
+  userName = val;
+  buildQuestions();
+  show('testStep');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function buildQuestions() {
+  sc = {A:0,B:0,C:0,D:0};
+  picked = {};
+  answered = 0;
+  document.getElementById('pFill').style.width = '0%';
+  document.getElementById('pText').textContent = '0 / 20';
+  document.getElementById('submitBtn').disabled = true;
+
+  shuffled = shuffle(ALL_QS);
+  const el = document.getElementById('qList');
+  el.innerHTML = '';
+  shuffled.forEach(function(q, i) {
+    el.insertAdjacentHTML('beforeend',
+      '<div class="question">' +
+        '<div class="q-text">' + q.text + '</div>' +
+        '<div class="scale">' +
+          '<span class="scale-label">전혀 아니다</span>' +
+          '<div class="scale-btns">' +
+            [1,2,3,4,5].map(function(v) {
+              return '<button class="scale-btn" data-idx="' + i + '" data-v="' + v + '">' + v + '</button>';
+            }).join('') +
+          '</div>' +
+          '<span class="scale-label">매우 그렇다</span>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+
+  document.getElementById('qList').addEventListener('click', function(e) {
+    const btn = e.target.closest('.scale-btn');
+    if (!btn) return;
+    const idx = +btn.dataset.idx, v = +btn.dataset.v;
+    const ax = shuffled[idx].ax;
+    if (picked[idx] === undefined) {
+      answered++;
+    } else {
+      sc[ax] -= picked[idx];
+    }
+    picked[idx] = v;
+    sc[ax] += v;
+    document.querySelectorAll('.scale-btn[data-idx="' + idx + '"]').forEach(function(b) { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+    document.getElementById('pFill').style.width = (answered/20*100) + '%';
+    document.getElementById('pText').textContent = answered + ' / 20';
+    if (answered === 20) document.getElementById('submitBtn').disabled = false;
+  });
+}
+
+document.getElementById('submitBtn').addEventListener('click', showResult);
+
+function showResult() {
+  const sorted = Object.entries(sc).sort(function(a,b){ return b[1]-a[1]; });
+  const mAx = sorted[0][0], mSc = sorted[0][1];
+  const sAx = sorted[1][0], sSc = sorted[1][1];
+  const m = TYPES[mAx], s = TYPES[sAx];
+
+  document.getElementById('rSubtitle').textContent = m.subtitle;
+  document.getElementById('rBulletsTitle').textContent = userName + '님은 이런 디자이너예요';
+  document.getElementById('rTypename').innerHTML = '<span style="color:' + m.color + '">' + m.nickname + '</span>';
+  document.getElementById('rChar').innerHTML = CHARS[mAx];
+  document.getElementById('rTags').innerHTML = m.tags.map(function(t){ return '<span class="result-tag">' + t + '</span>'; }).join('');
+  document.getElementById('rOneliner').innerHTML = m.oneliner;
+  document.getElementById('rBullets').innerHTML = m.bullets.map(function(b){ return '<li>' + b + '</li>'; }).join('');
+  document.getElementById('rSub').innerHTML =
+    '<div class="result-card-title">보조 유형</div>' +
+    '<div style="font-size:1.6rem; line-height:1;">' + s.icon + '</div>' +
+    '<div class="sub-name" style="color:' + s.color + '">' + s.nickname + '</div>' +
+    '<div class="sub-oneliner">' + s.oneliner.replace(/<br>/g,' ') + '</div>';
+
+  const groups = {};
+  sorted.forEach(function(item) {
+    const lvInfo = lv(item[1]);
+    if (!groups[lvInfo.label]) groups[lvInfo.label] = {color:lvInfo.color, items:[]};
+    groups[lvInfo.label].items.push(item);
+  });
+
+  let barsHTML = '';
+  Object.entries(groups).forEach(function(entry) {
+    const label = entry[0], group = entry[1];
+    barsHTML += '<div class="score-group"><div class="score-group-label" style="color:' + group.color + '">' + label + '</div>';
+    group.items.forEach(function(item) {
+      const t = TYPES[item[0]], pct = Math.round(item[1]/25*100);
+      barsHTML +=
+        '<div class="score-row">' +
+          '<div class="score-meta">' +
+            '<span class="score-name-txt" style="color:' + t.color + '">' + t.nickname + '</span>' +
+            '<span class="score-right-txt">' + item[1] + '점</span>' +
+          '</div>' +
+          '<div class="bar-bg"><div class="bar-fill" style="width:0%;background:' + t.color + '" data-pct="' + pct + '"></div></div>' +
+        '</div>';
+    });
+    barsHTML += '</div>';
+  });
+  document.getElementById('rScores').innerHTML = barsHTML;
+
+  show('resultStep');
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  setTimeout(function() {
+    document.querySelectorAll('.bar-fill').forEach(function(el) {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 120);
+}
+
+function goRetry() {
+  document.getElementById('nameInput').value = '';
+  document.getElementById('nameNextBtn').disabled = true;
+  userName = '';
+  show('nameStep');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
